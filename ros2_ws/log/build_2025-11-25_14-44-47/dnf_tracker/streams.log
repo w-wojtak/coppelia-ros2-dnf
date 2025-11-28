@@ -1,0 +1,24 @@
+[1.979s] Invoking command in '/home/rosuser/ros2_ws/build/dnf_tracker': PYTHONPATH=/home/rosuser/ros2_ws/build/dnf_tracker/prefix_override:/usr/local/lib/python3.10/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/rosuser/ros2_ws/install/dnf_tracker/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/rosuser/ros2_ws/build/dnf_tracker/build --no-deps symlink_data
+[2.277s] /usr/local/lib/python3.10/dist-packages/setuptools/_distutils/dist.py:289: UserWarning: Unknown distribution option: 'tests_require'
+[2.277s]   warnings.warn(msg)
+[2.529s] running develop
+[2.823s] running egg_info
+[2.846s] creating dnf_tracker.egg-info
+[2.846s] writing dnf_tracker.egg-info/PKG-INFO
+[2.847s] writing dependency_links to dnf_tracker.egg-info/dependency_links.txt
+[2.847s] writing entry points to dnf_tracker.egg-info/entry_points.txt
+[2.848s] writing requirements to dnf_tracker.egg-info/requires.txt
+[2.848s] writing top-level names to dnf_tracker.egg-info/top_level.txt
+[2.848s] writing manifest file 'dnf_tracker.egg-info/SOURCES.txt'
+[2.904s] reading manifest file 'dnf_tracker.egg-info/SOURCES.txt'
+[2.906s] writing manifest file 'dnf_tracker.egg-info/SOURCES.txt'
+[2.932s] running build_ext
+[2.933s] Creating /home/rosuser/ros2_ws/install/dnf_tracker/lib/python3.10/site-packages/dnf-tracker.egg-link (link to .)
+[2.934s] Installing cube_tracker script to /home/rosuser/ros2_ws/install/dnf_tracker/lib/dnf_tracker
+[2.935s] 
+[2.935s] Installed /home/rosuser/ros2_ws/build/dnf_tracker
+[2.935s] running symlink_data
+[2.935s] creating /home/rosuser/ros2_ws/install/dnf_tracker/share/ament_index/resource_index/packages
+[2.936s] symbolically linking /home/rosuser/ros2_ws/build/dnf_tracker/resource/dnf_tracker -> /home/rosuser/ros2_ws/install/dnf_tracker/share/ament_index/resource_index/packages
+[2.936s] symbolically linking /home/rosuser/ros2_ws/build/dnf_tracker/package.xml -> /home/rosuser/ros2_ws/install/dnf_tracker/share/dnf_tracker
+[2.973s] Invoked command in '/home/rosuser/ros2_ws/build/dnf_tracker' returned '0': PYTHONPATH=/home/rosuser/ros2_ws/build/dnf_tracker/prefix_override:/usr/local/lib/python3.10/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/rosuser/ros2_ws/install/dnf_tracker/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/rosuser/ros2_ws/build/dnf_tracker/build --no-deps symlink_data

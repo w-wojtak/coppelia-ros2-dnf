@@ -1,0 +1,5 @@
+[user]
+	name = Weronika
+	email = w.wojtak@gmail.com
+[credential]
+	helper = "!f() { /home/rosuser/.vscode-server/bin/385651c938df8a906869babee516bffd0ddb9829/node /tmp/vscode-remote-containers-68c3835c-1534-4a48-99a6-f7f8a0ca337d.js git-credential-helper $*; }; f"

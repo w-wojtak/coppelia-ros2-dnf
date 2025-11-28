@@ -1,0 +1,19 @@
+[1.269s] Invoking command in '/home/rosuser/ros2_ws/build/dnf_tracker': PYTHONPATH=/home/rosuser/ros2_ws/build/dnf_tracker/prefix_override:/usr/local/lib/python3.10/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/rosuser/ros2_ws/install/dnf_tracker/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/rosuser/ros2_ws/build/dnf_tracker/build --no-deps symlink_data
+[1.570s] /usr/local/lib/python3.10/dist-packages/setuptools/_distutils/dist.py:289: UserWarning: Unknown distribution option: 'tests_require'
+[1.570s]   warnings.warn(msg)
+[1.815s] running develop
+[2.112s] running egg_info
+[2.136s] writing dnf_tracker.egg-info/PKG-INFO
+[2.137s] writing dependency_links to dnf_tracker.egg-info/dependency_links.txt
+[2.138s] writing entry points to dnf_tracker.egg-info/entry_points.txt
+[2.138s] writing requirements to dnf_tracker.egg-info/requires.txt
+[2.139s] writing top-level names to dnf_tracker.egg-info/top_level.txt
+[2.189s] reading manifest file 'dnf_tracker.egg-info/SOURCES.txt'
+[2.191s] writing manifest file 'dnf_tracker.egg-info/SOURCES.txt'
+[2.216s] running build_ext
+[2.217s] Creating /home/rosuser/ros2_ws/install/dnf_tracker/lib/python3.10/site-packages/dnf-tracker.egg-link (link to .)
+[2.219s] Installing cube_tracker script to /home/rosuser/ros2_ws/install/dnf_tracker/lib/dnf_tracker
+[2.219s] 
+[2.220s] Installed /home/rosuser/ros2_ws/build/dnf_tracker
+[2.220s] running symlink_data
+[2.260s] Invoked command in '/home/rosuser/ros2_ws/build/dnf_tracker' returned '0': PYTHONPATH=/home/rosuser/ros2_ws/build/dnf_tracker/prefix_override:/usr/local/lib/python3.10/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/rosuser/ros2_ws/install/dnf_tracker/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/rosuser/ros2_ws/build/dnf_tracker/build --no-deps symlink_data

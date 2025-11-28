@@ -1,0 +1,47 @@
+1764347369.3299353 [INFO] [launch]: All log files can be found below /home/rosuser/.ros/log/2025-11-28-16-29-29-326793-89e6d0df0c3d-503139
+1764347369.3305523 [INFO] [launch]: Default logging verbosity is set to INFO
+1764347369.5195048 [INFO] [bridge_node-1]: process started with pid [503150]
+1764347369.5200787 [INFO] [cube_tracker-2]: process started with pid [503152]
+1764347369.9803021 [bridge_node-1] [INFO] [1764347369.979899864] [coppelia_bridge]: Starting CoppeliaSim bridge...
+1764347369.9825721 [cube_tracker-2] [INFO] [1764347369.982356860] [cube_tracker]: Cube Tracker Initialized. Waiting for movement...
+1764347369.9841349 [bridge_node-1] [INFO] [1764347369.983947370] [coppelia_bridge]: Connected! ClientID: 0
+1764347370.0349200 [bridge_node-1] [INFO] [1764347370.034297131] [coppelia_bridge]: Found Cuboid1, publishing to /cuboid1_pos
+1764347370.1732099 [bridge_node-1] [INFO] [1764347370.172480329] [coppelia_bridge]: Found Cuboid2, publishing to /cuboid2_pos
+1764347370.3012805 [bridge_node-1] [INFO] [1764347370.300552188] [coppelia_bridge]: Found Cuboid3, publishing to /cuboid3_pos
+1764347378.1517549 [WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+1764347378.1570420 [cube_tracker-2] Traceback (most recent call last):
+1764347378.1575332 [cube_tracker-2]   File "/home/rosuser/ros2_ws/install/dnf_tracker/lib/dnf_tracker/cube_tracker", line 33, in <module>
+1764347378.1579630 [cube_tracker-2]     sys.exit(load_entry_point('dnf-tracker', 'console_scripts', 'cube_tracker')())
+1764347378.1584005 [cube_tracker-2]   File "/home/rosuser/ros2_ws/build/dnf_tracker/dnf_tracker/cube_tracker_node.py", line 45, in main
+1764347378.1587763 [cube_tracker-2]     rclpy.spin(node)
+1764347378.1591396 [cube_tracker-2]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 229, in spin
+1764347378.1594920 [cube_tracker-2]     executor.spin_once()
+1764347378.1598475 [cube_tracker-2]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 751, in spin_once
+1764347378.1602566 [cube_tracker-2]     self._spin_once_impl(timeout_sec)
+1764347378.1606607 [cube_tracker-2]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 740, in _spin_once_impl
+1764347378.1610630 [cube_tracker-2]     handler, entity, node = self.wait_for_ready_callbacks(timeout_sec=timeout_sec)
+1764347378.1614614 [cube_tracker-2]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 723, in wait_for_ready_callbacks
+1764347378.1618807 [cube_tracker-2]     return next(self._cb_iter)
+1764347378.1622994 [cube_tracker-2]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 620, in _wait_for_ready_callbacks
+1764347378.1632383 [cube_tracker-2]     wait_set.wait(timeout_nsec)
+1764347378.1636639 [cube_tracker-2] KeyboardInterrupt
+1764347378.2449610 [ERROR] [cube_tracker-2]: process has died [pid 503152, exit code -2, cmd '/home/rosuser/ros2_ws/install/dnf_tracker/lib/dnf_tracker/cube_tracker --ros-args -r __node:=cube_tracker'].
+1764347378.6726856 [bridge_node-1] ----------------------------------------------------
+1764347378.6730604 [bridge_node-1] The remoteApi library could not be loaded. Make sure
+1764347378.6732929 [bridge_node-1] it is located in the same folder as "sim.py", or
+1764347378.6735127 [bridge_node-1] appropriately adjust the file "sim.py"
+1764347378.6737387 [bridge_node-1] ----------------------------------------------------
+1764347378.6739485 [bridge_node-1] 
+1764347378.6748207 [bridge_node-1] Traceback (most recent call last):
+1764347378.6752884 [bridge_node-1]   File "/home/rosuser/ros2_ws/install/coppelia_bridge/lib/coppelia_bridge/bridge_node", line 33, in <module>
+1764347378.6761129 [bridge_node-1]     sys.exit(load_entry_point('coppelia-bridge', 'console_scripts', 'bridge_node')())
+1764347378.6765497 [bridge_node-1]   File "/home/rosuser/ros2_ws/build/coppelia_bridge/coppelia_bridge/bridge_node.py", line 77, in main
+1764347378.6769552 [bridge_node-1]     rclpy.shutdown()
+1764347378.6773512 [bridge_node-1]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 130, in shutdown
+1764347378.6777854 [bridge_node-1]     _shutdown(context=context)
+1764347378.6782141 [bridge_node-1]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/utilities.py", line 58, in shutdown
+1764347378.6861260 [bridge_node-1]     return context.shutdown()
+1764347378.6865613 [bridge_node-1]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/context.py", line 102, in shutdown
+1764347378.6869543 [bridge_node-1]     self.__context.shutdown()
+1764347378.6873457 [bridge_node-1] rclpy._rclpy_pybind11.RCLError: failed to shutdown: rcl_shutdown already called on the given context, at ./src/rcl/init.c:241
+1764347378.8507802 [ERROR] [bridge_node-1]: process has died [pid 503150, exit code 1, cmd '/home/rosuser/ros2_ws/install/coppelia_bridge/lib/coppelia_bridge/bridge_node --ros-args -r __node:=coppelia_bridge'].

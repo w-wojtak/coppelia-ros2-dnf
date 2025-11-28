@@ -1,0 +1,2 @@
+[console_scripts]
+bridge_node = coppelia_bridge.bridge_node:main

@@ -1,0 +1,16 @@
+Metadata-Version: 2.4
+Name: coppelia_bridge
+Version: 0.0.0
+Summary: ROS2 bridge to CoppeliaSim
+Maintainer: rosuser
+Maintainer-email: w.wojtak@gmail.com
+License: Apache License 2.0
+Requires-Dist: setuptools
+Provides-Extra: test
+Requires-Dist: pytest; extra == "test"
+Dynamic: license
+Dynamic: maintainer
+Dynamic: maintainer-email
+Dynamic: provides-extra
+Dynamic: requires-dist
+Dynamic: summary

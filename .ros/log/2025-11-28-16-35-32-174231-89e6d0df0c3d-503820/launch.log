@@ -1,0 +1,53 @@
+1764347732.1759713 [INFO] [launch]: All log files can be found below /home/rosuser/.ros/log/2025-11-28-16-35-32-174231-89e6d0df0c3d-503820
+1764347732.1762538 [INFO] [launch]: Default logging verbosity is set to INFO
+1764347732.2629306 [INFO] [bridge_node-1]: process started with pid [503824]
+1764347732.2632363 [INFO] [cube_tracker-2]: process started with pid [503826]
+1764347732.7023196 [cube_tracker-2] [INFO] [1764347732.701905953] [cube_tracker]: Tracker Started. Waiting for moves to finish...
+1764347732.7552755 [bridge_node-1] [INFO] [1764347732.754898116] [coppelia_bridge]: Starting CoppeliaSim bridge...
+1764347732.7586162 [bridge_node-1] [INFO] [1764347732.758421047] [coppelia_bridge]: Connected! ClientID: 0
+1764347732.7982404 [bridge_node-1] [INFO] [1764347732.797928180] [coppelia_bridge]: Found Cuboid1, publishing to /cuboid1_pos
+1764347732.8649590 [bridge_node-1] [INFO] [1764347732.864538688] [coppelia_bridge]: Found Cuboid2, publishing to /cuboid2_pos
+1764347732.9067917 [bridge_node-1] [INFO] [1764347732.906414155] [coppelia_bridge]: Found Cuboid3, publishing to /cuboid3_pos
+1764347747.4100916 [cube_tracker-2] [INFO] [1764347747.409535448] [cube_tracker]: ✅ FINAL: Cuboid1 finished moving. Distance: 0.35m. New Pos: array('f', [-0.6499999761581421, 0.3499673008918762, 0.9300000071525574])
+1764347760.6113889 [cube_tracker-2] [INFO] [1764347760.610715173] [cube_tracker]: ✅ FINAL: Cuboid2 finished moving. Distance: 0.35m. New Pos: array('f', [-0.6499999761581421, 0.2499673068523407, 0.9300000071525574])
+1764347774.0114429 [cube_tracker-2] [INFO] [1764347774.010760067] [cube_tracker]: ✅ FINAL: Cuboid3 finished moving. Distance: 0.35m. New Pos: array('f', [-0.6499999761581421, 0.14996731281280518, 0.9300000071525574])
+1764347823.9116600 [cube_tracker-2] [INFO] [1764347823.910851622] [cube_tracker]: ✅ FINAL: Cuboid1 finished moving. Distance: 0.35m. New Pos: array('f', [-0.6499999761581421, -4.440892098500626e-16, 0.9300000071525574])
+1764347823.9142649 [cube_tracker-2] [INFO] [1764347823.913823632] [cube_tracker]: ✅ FINAL: Cuboid2 finished moving. Distance: 0.35m. New Pos: array('f', [-0.6499999761581421, -0.09999999403953552, 0.9300000071525574])
+1764347823.9170427 [cube_tracker-2] [INFO] [1764347823.916647312] [cube_tracker]: ✅ FINAL: Cuboid3 finished moving. Distance: 0.35m. New Pos: array('f', [-0.6499999761581421, -0.19999998807907104, 0.9300000071525574])
+1764347828.6553855 [WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+1764347828.6606197 [cube_tracker-2] Traceback (most recent call last):
+1764347828.6611328 [cube_tracker-2]   File "/home/rosuser/ros2_ws/install/dnf_tracker/lib/dnf_tracker/cube_tracker", line 33, in <module>
+1764347828.6615198 [cube_tracker-2]     sys.exit(load_entry_point('dnf-tracker', 'console_scripts', 'cube_tracker')())
+1764347828.6618595 [cube_tracker-2]   File "/home/rosuser/ros2_ws/build/dnf_tracker/dnf_tracker/cube_tracker_node.py", line 79, in main
+1764347828.6622450 [cube_tracker-2]     rclpy.spin(node)
+1764347828.6626229 [cube_tracker-2]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 229, in spin
+1764347828.6629679 [cube_tracker-2]     executor.spin_once()
+1764347828.6633034 [cube_tracker-2]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 751, in spin_once
+1764347828.6636453 [cube_tracker-2]     self._spin_once_impl(timeout_sec)
+1764347828.6639769 [cube_tracker-2]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 740, in _spin_once_impl
+1764347828.6643107 [cube_tracker-2]     handler, entity, node = self.wait_for_ready_callbacks(timeout_sec=timeout_sec)
+1764347828.6646442 [cube_tracker-2]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 723, in wait_for_ready_callbacks
+1764347828.6649776 [cube_tracker-2]     return next(self._cb_iter)
+1764347828.6653230 [cube_tracker-2]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 620, in _wait_for_ready_callbacks
+1764347828.6656606 [cube_tracker-2]     wait_set.wait(timeout_nsec)
+1764347828.6660240 [cube_tracker-2] KeyboardInterrupt
+1764347828.7364776 [ERROR] [cube_tracker-2]: process has died [pid 503826, exit code -2, cmd '/home/rosuser/ros2_ws/install/dnf_tracker/lib/dnf_tracker/cube_tracker --ros-args -r __node:=cube_tracker'].
+1764347829.1707819 [bridge_node-1] ----------------------------------------------------
+1764347829.1711674 [bridge_node-1] The remoteApi library could not be loaded. Make sure
+1764347829.1714020 [bridge_node-1] it is located in the same folder as "sim.py", or
+1764347829.1716204 [bridge_node-1] appropriately adjust the file "sim.py"
+1764347829.1718330 [bridge_node-1] ----------------------------------------------------
+1764347829.1720426 [bridge_node-1] 
+1764347829.1729865 [bridge_node-1] Traceback (most recent call last):
+1764347829.1733630 [bridge_node-1]   File "/home/rosuser/ros2_ws/install/coppelia_bridge/lib/coppelia_bridge/bridge_node", line 33, in <module>
+1764347829.1742656 [bridge_node-1]     sys.exit(load_entry_point('coppelia-bridge', 'console_scripts', 'bridge_node')())
+1764347829.1746223 [bridge_node-1]   File "/home/rosuser/ros2_ws/build/coppelia_bridge/coppelia_bridge/bridge_node.py", line 77, in main
+1764347829.1754973 [bridge_node-1]     rclpy.shutdown()
+1764347829.1758420 [bridge_node-1]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 130, in shutdown
+1764347829.1766822 [bridge_node-1]     _shutdown(context=context)
+1764347829.1770203 [bridge_node-1]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/utilities.py", line 58, in shutdown
+1764347829.1778455 [bridge_node-1]     return context.shutdown()
+1764347829.1783457 [bridge_node-1]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/context.py", line 102, in shutdown
+1764347829.1792488 [bridge_node-1]     self.__context.shutdown()
+1764347829.1795847 [bridge_node-1] rclpy._rclpy_pybind11.RCLError: failed to shutdown: rcl_shutdown already called on the given context, at ./src/rcl/init.c:241
+1764347829.3542445 [ERROR] [bridge_node-1]: process has died [pid 503824, exit code 1, cmd '/home/rosuser/ros2_ws/install/coppelia_bridge/lib/coppelia_bridge/bridge_node --ros-args -r __node:=coppelia_bridge'].
