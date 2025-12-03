@@ -2,7 +2,7 @@
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Float32MultiArray
-import sim
+import sim  # CoppeliaSim remote API
 import time
 
 class CoppeliaBridge(Node):
@@ -26,7 +26,7 @@ class CoppeliaBridge(Node):
         # Cubes and ROS2 publishers
         self.cubes = ['Cuboid1', 'Cuboid2', 'Cuboid3']
         self.handles = []
-        self.cube_publishers  = []
+        self.cube_publishers = []
 
         for i, name in enumerate(self.cubes):
             # Get handle
@@ -41,29 +41,31 @@ class CoppeliaBridge(Node):
             pub = self.create_publisher(Float32MultiArray, f'/cube{i+1}_pos', 10)
             self.cube_publishers.append(pub)
 
-        # Move cubes sequentially and publish positions
-        for i, h in enumerate(self.handles):
-            pos = [0.1*i, 0.2*i, 0.3]
-            sim.simxSetObjectPosition(self.clientID, h, -1, pos, sim.simx_opmode_blocking)
-            self.get_logger().info(f"Moved {self.cubes[i]} to {pos}")
+        # Timer to continuously publish cube positions at 20 Hz
+        self.timer = self.create_timer(0.05, self.publish_positions)
 
-            # Read back position
+    def publish_positions(self):
+        """Read cube positions from CoppeliaSim and publish to ROS2 topics."""
+        for i, h in enumerate(self.handles):
             res, current_pos = sim.simxGetObjectPosition(self.clientID, h, -1, sim.simx_opmode_blocking)
             if res == sim.simx_return_ok:
                 msg = Float32MultiArray()
                 msg.data = current_pos
                 self.cube_publishers[i].publish(msg)
-                self.get_logger().info(f"Published {self.cubes[i]} position: {current_pos}")
-            time.sleep(0.5)
+                self.get_logger().debug(f"Published {self.cubes[i]} position: {current_pos}")
 
 def main(args=None):
     rclpy.init(args=args)
     node = CoppeliaBridge()
-    rclpy.spin(node)
-    if node.clientID != -1:
-        sim.simxFinish(node.clientID)
-    node.destroy_node()
-    rclpy.shutdown()
+    try:
+        rclpy.spin(node)
+    except KeyboardInterrupt:
+        pass
+    finally:
+        if node.clientID != -1:
+            sim.simxFinish(node.clientID)
+        node.destroy_node()
+        rclpy.shutdown()
 
 if __name__ == '__main__':
     main()

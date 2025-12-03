@@ -26,7 +26,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'cube_tracker = dnf_tracker.cube_tracker_node:main',
+            'cube_tracker_node = dnf_tracker.cube_tracker_node:main',
+            'dnf_learning_node = dnf_tracker.dnf_learning_node:main',
         ],
     },
 )

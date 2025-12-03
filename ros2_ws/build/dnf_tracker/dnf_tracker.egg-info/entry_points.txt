@@ -1,2 +1,0 @@
-[console_scripts]
-cube_tracker = dnf_tracker.cube_tracker_node:main
