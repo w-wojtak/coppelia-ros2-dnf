@@ -28,6 +28,7 @@ setup(
         'console_scripts': [
             'cube_tracker_node = dnf_tracker.cube_tracker_node:main',
             'dnf_learning_node = dnf_tracker.dnf_learning_node:main',
+            'dnf_recall_node = dnf_tracker.dnf_recall_node:main',
         ],
     },
 )

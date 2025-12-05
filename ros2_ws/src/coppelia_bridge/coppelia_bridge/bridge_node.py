@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import rclpy
 from rclpy.node import Node
-from std_msgs.msg import Float32MultiArray
+from std_msgs.msg import Float32MultiArray, String
 import sim
 import time
 
@@ -20,16 +20,16 @@ class CoppeliaBridge(Node):
 
         self.get_logger().info(f"Connected! ClientID: {self.clientID}")
 
-        # Cube handles and publishers
+        # ============ CUBE SETUP ============
         self.cube_names = ['Cuboid1', 'Cuboid2', 'Cuboid3']
         self.handles = {}
-        self.publishers_dict = {}  # rename to avoid conflict
+        self.publishers_dict = {}
+        self.initial_positions = {}  # Store initial positions
 
         for name in self.cube_names:
             res, h = sim.simxGetObjectHandle(self.clientID, name, sim.simx_opmode_blocking)
             if res == sim.simx_return_ok:
                 self.handles[name] = h
-                # Start streaming for buffer reads
                 sim.simxGetObjectPosition(self.clientID, h, -1, sim.simx_opmode_streaming)
                 topic_name = f'/{name.lower()}_pos'
                 self.publishers_dict[name] = self.create_publisher(Float32MultiArray, topic_name, 10)
@@ -37,13 +37,78 @@ class CoppeliaBridge(Node):
             else:
                 self.get_logger().error(f"Could not find object: {name}")
 
-        # Give streaming some time to initialize
-        time.sleep(0.2)
+        # Give streaming time to initialize, then store initial positions
+        time.sleep(0.3)
+        self._store_initial_positions()
 
-        # Timer to read positions at 10Hz
+        # ============ DESTINATION POSITION ============
+        # Where cubes go when "picked" - adjust to match your scene
+        # This could be a "done" area on the table
+        self.destination_offset = [0.0, 0.3, 0.0]  # Move 30cm in Y direction
+        
+        # ============ SUBSCRIBE TO PREDICTIONS ============
+        self.create_subscription(
+            String,
+            '/dnf_predictions',
+            self.handle_prediction,
+            10
+        )
+        self.get_logger().info("Subscribed to /dnf_predictions")
+
+        # Timer to publish cube positions
         self.timer = self.create_timer(0.1, self.timer_callback)
 
+    def _store_initial_positions(self):
+        """Store initial cube positions for reference."""
+        for name, handle in self.handles.items():
+            res, pos = sim.simxGetObjectPosition(self.clientID, handle, -1, sim.simx_opmode_buffer)
+            if res == sim.simx_return_ok:
+                self.initial_positions[name] = list(pos)
+                self.get_logger().info(f"  {name} initial pos: [{pos[0]:.3f}, {pos[1]:.3f}, {pos[2]:.3f}]")
+
+    def handle_prediction(self, msg: String):
+        """When a prediction is made, move that cube to destination."""
+        cube_name = msg.data
+        self.get_logger().info(f"📦 Received prediction: {cube_name}")
+        
+        if cube_name not in self.handles:
+            self.get_logger().warn(f"Unknown cube: {cube_name}")
+            return
+        
+        # Get current position
+        handle = self.handles[cube_name]
+        res, current_pos = sim.simxGetObjectPosition(self.clientID, handle, -1, sim.simx_opmode_buffer)
+        
+        if res != sim.simx_return_ok:
+            self.get_logger().error(f"Could not get position of {cube_name}")
+            return
+        
+        # Calculate new position (move by offset)
+        new_pos = [
+            current_pos[0] + self.destination_offset[0],
+            current_pos[1] + self.destination_offset[1],
+            current_pos[2] + self.destination_offset[2]
+        ]
+        
+        # Move the cube
+        res = sim.simxSetObjectPosition(
+            self.clientID,
+            handle,
+            -1,  # Relative to world
+            new_pos,
+            sim.simx_opmode_oneshot
+        )
+        
+        if res == sim.simx_return_ok or res == sim.simx_return_novalue_flag:
+            self.get_logger().info(
+                f"✓ Moved {cube_name}: [{current_pos[0]:.3f}, {current_pos[1]:.3f}, {current_pos[2]:.3f}] "
+                f"→ [{new_pos[0]:.3f}, {new_pos[1]:.3f}, {new_pos[2]:.3f}]"
+            )
+        else:
+            self.get_logger().error(f"Failed to move {cube_name}, error: {res}")
+
     def timer_callback(self):
+        """Publish cube positions."""
         if sim.simxGetConnectionId(self.clientID) == -1:
             self.get_logger().error("Lost connection to CoppeliaSim")
             return
@@ -52,10 +117,9 @@ class CoppeliaBridge(Node):
             res, pos = sim.simxGetObjectPosition(self.clientID, handle, -1, sim.simx_opmode_buffer)
             if res == sim.simx_return_ok:
                 msg = Float32MultiArray()
-                msg.data = pos  # [x, y, z]
+                msg.data = pos
                 self.publishers_dict[name].publish(msg)
-                # Uncomment to debug
-                # self.get_logger().info(f"{name}: {pos}")
+
 
 def main(args=None):
     rclpy.init(args=args)
@@ -67,6 +131,7 @@ def main(args=None):
     sim.simxFinish(node.clientID)
     node.destroy_node()
     rclpy.shutdown()
+
 
 if __name__ == '__main__':
     main()
