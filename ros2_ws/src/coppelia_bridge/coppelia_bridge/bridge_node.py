@@ -20,11 +20,10 @@ class CoppeliaBridge(Node):
 
         self.get_logger().info(f"Connected! ClientID: {self.clientID}")
 
-        # ============ CUBE SETUP ============
+        # ============ CUBE TRACKING ============
         self.cube_names = ['Cuboid1', 'Cuboid2', 'Cuboid3']
         self.handles = {}
         self.publishers_dict = {}
-        self.initial_positions = {}  # Store initial positions
 
         for name in self.cube_names:
             res, h = sim.simxGetObjectHandle(self.clientID, name, sim.simx_opmode_blocking)
@@ -37,15 +36,6 @@ class CoppeliaBridge(Node):
             else:
                 self.get_logger().error(f"Could not find object: {name}")
 
-        # Give streaming time to initialize, then store initial positions
-        time.sleep(0.3)
-        self._store_initial_positions()
-
-        # ============ DESTINATION POSITION ============
-        # Where cubes go when "picked" - adjust to match your scene
-        # This could be a "done" area on the table
-        self.destination_offset = [0.0, 0.3, 0.0]  # Move 30cm in Y direction
-        
         # ============ SUBSCRIBE TO PREDICTIONS ============
         self.create_subscription(
             String,
@@ -53,59 +43,31 @@ class CoppeliaBridge(Node):
             self.handle_prediction,
             10
         )
-        self.get_logger().info("Subscribed to /dnf_predictions")
+        self.get_logger().info("Subscribed to /dnf_predictions - will send commands to Franka")
+
+        # Give streaming time to initialize
+        time.sleep(0.3)
 
         # Timer to publish cube positions
         self.timer = self.create_timer(0.1, self.timer_callback)
 
-    def _store_initial_positions(self):
-        """Store initial cube positions for reference."""
-        for name, handle in self.handles.items():
-            res, pos = sim.simxGetObjectPosition(self.clientID, handle, -1, sim.simx_opmode_buffer)
-            if res == sim.simx_return_ok:
-                self.initial_positions[name] = list(pos)
-                self.get_logger().info(f"  {name} initial pos: [{pos[0]:.3f}, {pos[1]:.3f}, {pos[2]:.3f}]")
-
     def handle_prediction(self, msg: String):
-        """When a prediction is made, move that cube to destination."""
+        """Send robot command to CoppeliaSim when prediction is received."""
         cube_name = msg.data
         self.get_logger().info(f"📦 Received prediction: {cube_name}")
         
-        if cube_name not in self.handles:
-            self.get_logger().warn(f"Unknown cube: {cube_name}")
-            return
-        
-        # Get current position
-        handle = self.handles[cube_name]
-        res, current_pos = sim.simxGetObjectPosition(self.clientID, handle, -1, sim.simx_opmode_buffer)
-        
-        if res != sim.simx_return_ok:
-            self.get_logger().error(f"Could not get position of {cube_name}")
-            return
-        
-        # Calculate new position (move by offset)
-        new_pos = [
-            current_pos[0] + self.destination_offset[0],
-            current_pos[1] + self.destination_offset[1],
-            current_pos[2] + self.destination_offset[2]
-        ]
-        
-        # Move the cube
-        res = sim.simxSetObjectPosition(
+        # Send command signal to Franka script in CoppeliaSim
+        res = sim.simxSetStringSignal(
             self.clientID,
-            handle,
-            -1,  # Relative to world
-            new_pos,
+            'frankaCommand',
+            cube_name.encode(),  # Must be bytes
             sim.simx_opmode_oneshot
         )
         
         if res == sim.simx_return_ok or res == sim.simx_return_novalue_flag:
-            self.get_logger().info(
-                f"✓ Moved {cube_name}: [{current_pos[0]:.3f}, {current_pos[1]:.3f}, {current_pos[2]:.3f}] "
-                f"→ [{new_pos[0]:.3f}, {new_pos[1]:.3f}, {new_pos[2]:.3f}]"
-            )
+            self.get_logger().info(f"🤖 Sent command to Franka: {cube_name}")
         else:
-            self.get_logger().error(f"Failed to move {cube_name}, error: {res}")
+            self.get_logger().error(f"Failed to send command, error: {res}")
 
     def timer_callback(self):
         """Publish cube positions."""
