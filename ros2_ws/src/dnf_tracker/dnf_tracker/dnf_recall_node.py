@@ -44,7 +44,7 @@ class DNFRecallNode(Node):
 
         # ============ OBJECT MAPPING (3 cubes) ============
         self.input_positions = [-20.0, 0.0, 20.0]
-        self.object_labels = ['Cuboid1', 'Cuboid2', 'Cuboid3']
+        self.object_labels = ['Cube 1', 'Cube 2', 'Cube 3']
         self.object_map = dict(zip(self.input_positions, self.object_labels))
         self.input_indices = [np.argmin(np.abs(self.x - pos)) for pos in self.input_positions]
 
@@ -79,7 +79,7 @@ class DNFRecallNode(Node):
 
         # ============ PLOTTING ============
         plt.ion()
-        self.fig, (self.ax1, self.ax2) = plt.subplots(1, 2, figsize=(14, 5))
+        self.fig, (self.ax1, self.ax2) = plt.subplots(1, 2, figsize=(8, 4))
         self._setup_plots()
         plt.show(block=False)
         plt.pause(0.1)
@@ -198,12 +198,14 @@ class DNFRecallNode(Node):
         # Action onset field initialization
         self.offset = 1.5
         self.h_u_act = -self.h_d_initial * np.ones_like(self.x) + self.offset
+
+        self.duration_delay_offset = 0.045
         
         # Use loaded sequence memory as the input pattern
-        self.input_action_onset = self.u_sm.copy()
-        
+        self.input_action_onset = self.u_sm.copy() + self.duration_delay_offset
+
         # Initialize u_act
-        self.u_act = self.input_action_onset + self.h_u_act
+        self.u_act = self.input_action_onset + self.h_u_act 
         
         # Working memory field
         self.u_wm = -1.0 * np.ones_like(self.x)
@@ -228,8 +230,8 @@ class DNFRecallNode(Node):
 
         # Plot 1: Action Onset Field
         self.ax1.set_xlim(-self.x_lim, self.x_lim)
-        self.ax1.set_ylim(-6, 3)
-        self.ax1.set_xlabel("Position")
+        self.ax1.set_ylim(-5, 4)
+        self.ax1.set_xlabel("Objects")
         self.ax1.set_ylabel("u_act(x)")
         self.ax1.set_title("Action Onset Field")
         self.ax1.axhline(y=self.theta_act, color='r', linestyle='--', 
@@ -237,6 +239,7 @@ class DNFRecallNode(Node):
         self.ax1.grid(True, alpha=0.3)
         self.ax1.set_xticks(object_positions)
         self.ax1.set_xticklabels(object_labels)
+        self.ax1.set_xticklabels(object_labels, rotation=45, ha='right', fontsize=12)
         for pos in object_positions:
             self.ax1.axvline(x=pos, color='gray', linestyle=':', alpha=0.5)
         self.line_act, = self.ax1.plot(self.x, self.u_act, 'b-', linewidth=2, label='u_act')
@@ -245,7 +248,7 @@ class DNFRecallNode(Node):
         # Plot 2: Working Memory Field
         self.ax2.set_xlim(-self.x_lim, self.x_lim)
         self.ax2.set_ylim(-2, 10)
-        self.ax2.set_xlabel("Position")
+        self.ax2.set_xlabel("Objects")
         self.ax2.set_ylabel("u_wm(x)")
         self.ax2.set_title("Working Memory Field")
         self.ax2.axhline(y=self.theta_wm, color='r', linestyle='--', 
@@ -253,6 +256,7 @@ class DNFRecallNode(Node):
         self.ax2.grid(True, alpha=0.3)
         self.ax2.set_xticks(object_positions)
         self.ax2.set_xticklabels(object_labels)
+        self.ax2.set_xticklabels(object_labels, rotation=45, ha='right', fontsize=12)
         for pos in object_positions:
             self.ax2.axvline(x=pos, color='gray', linestyle=':', alpha=0.5)
         self.line_wm, = self.ax2.plot(self.x, self.u_wm, 'g-', linewidth=2, label='u_wm')
@@ -426,36 +430,36 @@ class DNFRecallNode(Node):
                             )
 
                 # Create time-course plot
-                fig, ax = plt.subplots(figsize=(12, 6))
+                fig, ax = plt.subplots(figsize=(8, 3))
+                cube_labels = ['Cube 1', 'Cube 2', 'Cube 3']
                 
                 colors = ['red', 'green', 'blue']
                 for i, (pos, label) in enumerate(self.object_map.items()):
-                    ax.plot(time_history, u_act_history[:, i], 
-                           color=colors[i], linewidth=2, label=label)
+                    ax.plot(time_history, u_act_history[:, i], linewidth=2, label=label)
                     
-                    if pos in self.crossing_times:
-                        t_cross = self.crossing_times[pos]
-                        ax.axvline(x=t_cross, color=colors[i], linestyle='--', alpha=0.5)
-                        ax.annotate(f'{label}: {t_cross:.2f}s',
-                                   xy=(t_cross, self.theta_act),
-                                   xytext=(t_cross + 0.5, self.theta_act + 0.3 + i*0.3),
-                                   fontsize=10, color=colors[i])
+                    # if pos in self.crossing_times:
+                    #     t_cross = self.crossing_times[pos]
+                    #     ax.axvline(x=t_cross, color=colors[i], linestyle='--', alpha=0.5)
+                    #     ax.annotate(f'{label}: {t_cross:.2f}s',
+                    #                xy=(t_cross, self.theta_act),
+                    #                xytext=(t_cross + 0.5, self.theta_act + 0.3 + i*0.3),
+                    #                fontsize=10, color=colors[i])
 
-                ax.axhline(y=self.theta_act, color='black', linestyle='--',
-                          linewidth=1.5, label=f'Threshold (θ={self.theta_act})')
-                ax.set_xlabel('Time (s)', fontsize=12)
-                ax.set_ylabel('u_act Activation', fontsize=12)
-                ax.set_title('DNF Recall: Action Onset Field Activity Over Time', fontsize=14)
-                ax.legend(loc='upper right')
+                ax.axhline(y=self.theta_act, color='red', linestyle='--',
+                          linewidth=1.5, label=f'θ = {self.theta_act}')
+                ax.set_xlabel('Time [s]', fontsize=12)
+                ax.set_ylabel('u_act', fontsize=12)
+                ax.set_title('Action Onset Field Activity Over Time', fontsize=14)
+                ax.legend(loc='lower right')
                 ax.grid(True, alpha=0.3)
                 ax.set_xlim(0, max(time_history) if len(time_history) > 0 else self.t_lim)
-                ax.set_ylim(-2, 5)
+                ax.set_ylim(0.5, 2.5)
 
                 plt.tight_layout()
 
                 # Save plot
                 timecourse_path = os.path.join(results_dir, f'recall_timecourse_{timestamp}.png')
-                fig.savefig(timecourse_path, dpi=150, bbox_inches='tight')
+                fig.savefig(timecourse_path, dpi=300, bbox_inches='tight')
                 plt.close(fig)
 
                 # Save data

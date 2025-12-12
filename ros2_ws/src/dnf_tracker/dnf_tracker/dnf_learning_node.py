@@ -74,7 +74,7 @@ class DNFLearningNode(Node):
 
         # ============ PLOTTING ============
         plt.ion()
-        self.fig, (self.ax1, self.ax2) = plt.subplots(1, 2, figsize=(12, 5))
+        self.fig, (self.ax1, self.ax2) = plt.subplots(1, 2, figsize=(8, 4))
         self.line1, = self.ax1.plot(self.x, self.u_sm, 'b-', label='u_sm', linewidth=2)
         self.line2, = self.ax2.plot(self.x, self.u_d, 'r-', label='u_d', linewidth=2)
         self.setup_axes()
@@ -237,20 +237,38 @@ class DNFLearningNode(Node):
     def setup_axes(self):
         object_positions = [-20, 0, 20]
         object_labels = ['Cube1', 'Cube2', 'Cube3']
+        start_position = [0]  # for duration field x-axis label
 
         for ax in [self.ax1, self.ax2]:
-            ax.set_xlim(-self.x_lim, self.x_lim)
-            ax.set_ylim(-2, 6)
-            ax.set_xlabel("Objects")
-            ax.set_ylabel("u(x)")
             ax.grid(True, alpha=0.3)
-            ax.set_xticks(object_positions)
-            ax.set_xticklabels(object_labels, rotation=45, ha='right')
-            for pos in object_positions:
-                ax.axvline(x=pos, color='gray', linestyle='--', alpha=0.3, linewidth=0.5)
+            ax.tick_params(axis='both', which='major', labelsize=12)  # increase font size
 
-        self.ax1.set_title("Sequence Memory Field")
-        self.ax2.set_title("Task Duration Field")
+        # Sequence Memory Field (ax1)
+        self.ax1.set_xlim(-self.x_lim, self.x_lim)
+        self.ax1.set_ylim(-2, 6)
+        self.ax1.set_xlabel("Objects", fontsize=14)
+        self.ax1.set_ylabel("u_sm", fontsize=14)
+        self.ax1.axhline(y=self.theta_sm, color='r', linestyle='--', 
+                label=f'θ={self.theta_sm}', linewidth=2)
+        self.ax1.set_xticks(object_positions)
+        self.ax1.set_xticklabels(object_labels, rotation=45, ha='right', fontsize=12)
+        self.ax1.set_title("Sequence Memory Field", fontsize=16)
+        # for pos in object_positions:
+        #     self.ax1.axvline(x=pos, color='gray', linestyle='--', alpha=0.3, linewidth=0.5)
+        self.ax1.legend(loc='upper right')
+
+        # Task Duration Field (ax2)
+        self.ax2.set_xlim(-self.x_lim, self.x_lim)  
+        self.ax2.set_ylim(-2, 6)
+        self.ax2.set_xlabel("", fontsize=14)
+        self.ax2.set_ylabel("u_d", fontsize=14)
+        self.ax2.axhline(y=self.theta_d, color='r', linestyle='--', 
+                label=f'θ={self.theta_d}', linewidth=2)
+        self.ax2.set_xticks(start_position)
+        self.ax2.set_xticklabels(['start'], fontsize=12)
+        self.ax2.set_title("Task Duration Field", fontsize=16)
+        self.ax2.legend(loc='upper right')
+
 
     def update_plot(self):
         if not self.plot_needs_update:
@@ -341,35 +359,55 @@ class DNFLearningNode(Node):
 
                 # ===== PLOT TIME COURSES =====
                 timesteps = np.arange(len(u_sm_history)) * self.dt
-                
-                fig, axs = plt.subplots(2, 1, figsize=(12, 8), sharex=True)
+
+                fig, ax = plt.subplots(figsize=(8, 3))
+                cube_labels = ['Cube 1', 'Cube 2', 'Cube 3']
 
                 for i, pos in enumerate(self.input_positions):
-                    axs[0].plot(timesteps, u_sm_history[:, i], label=f'x = {pos}', linewidth=2)
-                axs[0].axhline(self.theta_sm, color='r', linestyle='--', 
-                              label=f'theta = {self.theta_sm}')
-                axs[0].set_ylabel('u_sm')
-                axs[0].set_ylim(-1, 5)
-                axs[0].legend()
-                axs[0].grid(True, alpha=0.3)
-                axs[0].set_title('Sequence Memory Field Over Time')
+                    ax.plot(timesteps, u_sm_history[:, i], label=cube_labels[i], linewidth=2)
 
-                for t, pos in self.input_events:
-                    axs[0].axvline(x=t, color='green', linestyle=':', alpha=0.5)
-
-                axs[1].plot(timesteps, u_d_history, label='x = 0', linewidth=2, color='orange')
-                axs[1].axhline(self.theta_d, color='r', linestyle='--', 
-                              label=f'theta = {self.theta_d}')
-                axs[1].set_ylabel('u_d')
-                axs[1].set_xlabel('Time [s]')
-                axs[1].set_ylim(0, 5)
-                axs[1].legend()
-                axs[1].grid(True, alpha=0.3)
-                axs[1].set_title('Detection Field Over Time')
+                ax.axhline(self.theta_sm, color='r', linestyle='--', label=f'θ = {self.theta_sm}')
+                ax.set_ylabel('u_sm')
+                ax.set_xlabel('Time [s]')
+                ax.set_ylim(-1, 5)
+                ax.legend(loc='upper left')
+                ax.grid(True, alpha=0.3)
+                ax.set_title('Sequence Memory Field Over Time')
 
                 timecourse_path = os.path.join(data_dir, f"timecourse_{timestamp}.png")
-                fig.savefig(timecourse_path, dpi=150, bbox_inches='tight')
+                fig.savefig(timecourse_path, dpi=300, bbox_inches='tight')
                 plt.close(fig)
+                # timesteps = np.arange(len(u_sm_history)) * self.dt
+                
+                # fig, axs = plt.subplots(2, 1, figsize=(8, 6), sharex=True)
+                # cube_labels = ['Cube 1', 'Cube 2', 'Cube 3']
+
+                # for i, pos in enumerate(self.input_positions):
+                #     axs[0].plot(timesteps, u_sm_history[:, i], label=cube_labels[i], linewidth=2)
+                # axs[0].axhline(self.theta_sm, color='r', linestyle='--', 
+                #               label=f'θ = {self.theta_sm}')
+                # axs[0].set_ylabel('u_sm')
+                # axs[0].set_ylim(-1, 5)
+                # axs[0].legend()
+                # axs[0].grid(True, alpha=0.3)
+                # axs[0].set_title('Sequence Memory Field Over Time')
+
+                # # for t, pos in self.input_events:
+                # #     axs[0].axvline(x=t, color='green', linestyle=':', alpha=0.5)
+
+                # axs[1].plot(timesteps, u_d_history, label='x = 0', linewidth=2, color='red')
+                # axs[1].axhline(self.theta_d, color='r', linestyle='--', 
+                #               label=f'θ = {self.theta_d}')
+                # axs[1].set_ylabel('u_d')
+                # axs[1].set_xlabel('Time [s]')
+                # axs[1].set_ylim(0, 5)
+                # axs[1].legend()
+                # axs[1].grid(True, alpha=0.3)
+                # axs[1].set_title('Duration Field Over Time')
+
+                # timecourse_path = os.path.join(data_dir, f"timecourse_{timestamp}.png")
+                # fig.savefig(timecourse_path, dpi=150, bbox_inches='tight')
+                # plt.close(fig)
 
                 final_plot_path = os.path.join(data_dir, f"final_plot_{timestamp}.png")
                 self.fig.savefig(final_plot_path, dpi=150, bbox_inches='tight')
