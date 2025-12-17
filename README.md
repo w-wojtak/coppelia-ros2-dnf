@@ -57,19 +57,20 @@ ros2 launch dnf_system dnf_learn.launch.py
 
 ## Package and Node Descriptions
 
-The project is organized as a modular ROS 2 system connecting a Dynamic Neural Field (DNF) model to CoppeliaSim and the Franka Emika robot. It includes two main packages: `dnf_system` and `coppelia_bridge`.
+The project is organized as a modular ROS 2 system connecting a Dynamic Neural Field (DNF) model to CoppeliaSim. It includes two main packages: `dnf_system` and `coppelia_bridge`.
 
 ### dnf_system Package
 
 This package implements the DNF architecture and handles input processing from the simulator.
 
 - **cube_input_node**  
-  Tracks cube positions in the simulator and publishes them on:
-  - `/cuboid1_pos`
-  - `/cuboid2_pos`
-  - `/cuboid3_pos`  
-
-  These positions are converted into Gaussian-shaped inputs on the `/dnf_inputs` topic for the learning node.
+  Tracks cube positions from the simulator and publishes them as Gaussian-shaped inputs for the DNF learning node:
+  - Subscribes to:
+    - `/cuboid1_pos`
+    - `/cuboid2_pos`
+    - `/cuboid3_pos`
+  - Publishes to:
+    - `/dnf_inputs`
 
 - **dnf_learning_node**  
   Implements the **learning phase** of the DNF architecture:
@@ -112,9 +113,9 @@ This modular structure ensures a **clear separation of concerns**:
 
 | Topic                 | Publisher                 | Subscriber              | Description                                                                 |
 |-----------------------|---------------------------|------------------------|-----------------------------------------------------------------------------|
-| `/cuboid1_pos`        | cube_input_node           | dnf_learning_node      | Cube 1 position from simulator                                               |
-| `/cuboid2_pos`        | cube_input_node           | dnf_learning_node      | Cube 2 position from simulator                                               |
-| `/cuboid3_pos`        | cube_input_node           | dnf_learning_node      | Cube 3 position from simulator                                               |
+| `/cuboid1_pos`        | coppelia_bridge_node      | cube_input_node        | Cube 1 position from simulator                                              |
+| `/cuboid2_pos`        | coppelia_bridge_node      | cube_input_node        | Cube 2 position from simulator                                              |
+| `/cuboid3_pos`        | coppelia_bridge_node      | cube_input_node        | Cube 3 position from simulator                                              |                                           |
 | `/dnf_inputs`         | cube_input_node           | dnf_learning_node      | Gaussian-shaped DNF inputs derived from cube positions                      |
 | `/dnf_predictions`    | dnf_recall_node           | coppelia_bridge_node   | Predicted action sequence strings for robot execution                       |
 
