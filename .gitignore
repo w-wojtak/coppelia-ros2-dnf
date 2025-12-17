@@ -1,24 +1,41 @@
+# ROS 2
 ros2_ws/build/
 ros2_ws/install/
 ros2_ws/log/
-ros2_ws/learned_data
+ros2_ws/learned_data/
 
+# CoppeliaSim
 CoppeliaSim_*
 *.ttt.autosave*
+.CoppeliaSim/
 
-CoppeliaSim_*
-*.ttt.autosave*
+# User / system state
+.cache/
+.config/
+.dotnet/
+.gnupg/
+.ros/
+.ssh/
 
+.bash_history
+.bash_logout
+.bashrc
+.profile
+.python_history
+.gitconfig
+
+# Python
 __pycache__/
 *.pyc
 .env/
 .venv/
 
+# Editors / OS
 .vscode/
 .idea/
-
 .DS_Store
 Thumbs.db
 
+# Temp
 *.bak
 *.tmp
