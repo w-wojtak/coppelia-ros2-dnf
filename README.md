@@ -82,7 +82,6 @@ This package implements the DNF architecture and handles input processing from t
   Implements the **recall phase**:
   - Uses the learned memory and task duration fields to generate predicted action sequences.
   - Publishes these predictions as strings on `/dnf_predictions`.
-  - Operates feedforward, without feedback from the simulator.
 
 ### coppelia_bridge Package
 
