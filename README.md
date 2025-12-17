@@ -36,3 +36,33 @@ docker run -it --rm --network host \
 
 The `--network host` option ensures ROS2 nodes can communicate across containers and your host.
 
+## Running Locally (without Docker)
+
+1. Clone the repository:
+```bash
+git clone https://github.com/w-wojtak/coppelia-ros2-dnf.git
+cd coppelia-ros2-dnf/ros2_ws
+```
+
+2. Build the workspace:
+```bash
+colcon build
+source install/setup.bash
+```
+
+3. Launch the simulation:
+```bash
+ros2 launch dnf_system dnf_learn.launch.py
+```
+
+## ROS2 Topics
+
+- `/cuboid1_pos`, `/cuboid2_pos`, `/cuboid3_pos`: Cube positions from CoppeliaSim
+
+- `/dnf_inputs`: DNF input values from cube positions
+
+## Notes
+
+- Lua scripts for CoppeliaSim are committed in plain text (`.lua`) for reproducibility.
+
+- Docker is recommended for easy setup, but the workspace can also be run directly on a ROS2-enabled machine.
