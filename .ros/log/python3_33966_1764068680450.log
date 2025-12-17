@@ -1,3 +1,0 @@
-[INFO] [1764068680.556545205] [coppelia_bridge]: Starting CoppeliaSim bridge...
-[INFO] [1764068680.559137422] [coppelia_bridge]: Connected to CoppeliaSim, clientID: 0
-[INFO] [1764068680.606146884] [coppelia_bridge]: Scene loaded: /home/rosuser/coppelia/scenes/project_test.ttt

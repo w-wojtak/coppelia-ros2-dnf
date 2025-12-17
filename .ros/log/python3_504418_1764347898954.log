@@ -1,5 +1,0 @@
-[INFO] [1764347899.082595517] [coppelia_bridge]: Starting CoppeliaSim bridge...
-[INFO] [1764347899.086294473] [coppelia_bridge]: Connected! ClientID: 0
-[INFO] [1764347899.123704091] [coppelia_bridge]: Found Cuboid1, publishing to /cuboid1_pos
-[INFO] [1764347899.196604978] [coppelia_bridge]: Found Cuboid2, publishing to /cuboid2_pos
-[INFO] [1764347899.243278279] [coppelia_bridge]: Found Cuboid3, publishing to /cuboid3_pos
