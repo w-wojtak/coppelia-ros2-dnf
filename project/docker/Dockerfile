@@ -36,7 +36,7 @@ RUN mkdir -p /home/$USERNAME/ros2_ws/src
 RUN mkdir -p /home/$USERNAME/project
 
 # Add entrypoint
-COPY docker/entrypoint.sh /home/$USERNAME/entrypoint.sh
+COPY entrypoint.sh /home/$USERNAME/entrypoint.sh
 RUN sudo chmod +x /home/$USERNAME/entrypoint.sh
 
 # Environment variables for Qt/X11
