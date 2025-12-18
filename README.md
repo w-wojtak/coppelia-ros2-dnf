@@ -125,3 +125,10 @@ This modular structure ensures a **clear separation of concerns**:
 - Lua scripts for CoppeliaSim are committed in plain text (`.lua`) for reproducibility.
 
 - Docker is recommended for easy setup, but the workspace can also be run directly on a ROS2-enabled machine.
+
+
+## License and Citation
+
+This project is released under the **MIT License**.
+
+If you use this system or derived components in academic work, please cite the associated publication or this repository. The license text is provided in the `LICENSE` file.
