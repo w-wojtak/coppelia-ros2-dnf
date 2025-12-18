@@ -20,9 +20,9 @@ This repository contains a ROS2-based simulation project integrating **CoppeliaS
 
 1. Build the Docker image:
 
+From the repository root:
 ```bash
-cd project/docker
-docker build -t coppelia-ros2-dnf .
+docker build -t coppelia-ros2-dnf -f project/docker/Dockerfile .
 ```
 
 2. Run the container:
